@@ -4,6 +4,7 @@ A modern, responsive, high-performance website created for **Bag Balaji Enterpri
 
 - **Live URL:** [https://guptaharsh6429-stack.github.io/BAG-BALAJI-ENTERPRISES/](https://guptaharsh6429-stack.github.io/BAG-BALAJI-ENTERPRISES/)
 - **Owner / Proprietor:** Hemant Garg
+- **GSTIN:** 23ENCPG1862D1Z1
 - **Phone / WhatsApp:** +91 9301506402
 - **Email:** info@bagbalaji.com
 - **Location:** Vijaypur, District Sheopur, Madhya Pradesh - 476332, India
