@@ -26,8 +26,8 @@ const DOM = {
   modalClose: document.querySelector('.modal-close'),
 };
 
-// Phone number for WhatsApp
-const WHATSAPP_NUMBER = '916264263058';
+// Phone number for WhatsApp (Hemant Garg - Bag Balaji Enterprises)
+const WHATSAPP_NUMBER = '919301506402';
 
 
 // ============================================

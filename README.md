@@ -3,7 +3,8 @@
 A modern, responsive, high-performance website created for **Bag Balaji Enterprises**, a leading supplier and trader of dried flowers, herbal seeds, and botanical products based in Vijaypur, District Sheopur, Madhya Pradesh, India.
 
 - **Live URL:** [https://guptaharsh6429-stack.github.io/BAG-BALAJI-ENTERPRISES/](https://guptaharsh6429-stack.github.io/BAG-BALAJI-ENTERPRISES/)
-- **Phone / WhatsApp:** +91 6264263058
+- **Owner / Proprietor:** Hemant Garg
+- **Phone / WhatsApp:** +91 9301506402
 - **Email:** info@bagbalaji.com
 - **Location:** Vijaypur, District Sheopur, Madhya Pradesh - 476332, India
 
@@ -73,7 +74,7 @@ You have full control over your product catalog right from your browser.
 
 - **Dynamic Product Catalog**: Automatically renders all products, live prices, and MOQ estimates.
 - **Full Owner Management Panel**: PIN-protected system to Add, Edit, Delete, and reprice botanicals.
-- **WhatsApp Direct Inquiries**: "Enquire" buttons pre-fill the product name and current price in WhatsApp (+91 6264263058).
+- **WhatsApp Direct Inquiries**: "Enquire" buttons pre-fill the product name and current price in WhatsApp (+91 9301506402).
 - **Product Details Modal**: Displays complete wholesale specifications and estimated minimum order value.
 - **Fast, Mobile-First Responsive Design**: Works seamlessly on smartphones, tablets, and desktops.
 - **SEO Ready**: Formatted meta tags, OpenGraph cards, and schema structure for Indian herbal trading.
