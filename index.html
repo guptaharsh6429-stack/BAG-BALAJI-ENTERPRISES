@@ -837,6 +837,33 @@
               <input type="text" id="prodPackaging" class="admin-form-input" placeholder="e.g. 5kg / 10kg / 25kg HDPE Bags">
             </div>
 
+            <!-- Real Product Image Upload (Optional) -->
+            <div class="admin-form-group">
+              <label>Real Product Photo (Optional)</label>
+              <input type="hidden" id="prodImageBase64" value="">
+
+              <div class="image-upload-box" id="imageUploadBox">
+                <span style="font-size: 2rem; display: block; margin-bottom: 4px;">📸</span>
+                <strong>Click to Upload Image from Computer / Phone</strong>
+                <p style="font-size: 0.78rem; color: var(--color-text-light); margin-top: 2px;">Supports JPG, PNG, WebP • Auto-compressed for fast loading</p>
+                <input type="file" id="prodImageFileInput" accept="image/*">
+              </div>
+
+              <!-- Or paste Image URL / path -->
+              <div style="margin-top: 8px;">
+                <input type="text" id="prodImageUrlInput" class="admin-form-input" placeholder="Or paste image URL / file path (e.g. images/my-photo.jpg)">
+              </div>
+
+              <!-- Preview thumbnail -->
+              <div class="image-preview-wrapper" id="imagePreviewWrapper">
+                <img src="" id="imagePreviewThumb" class="image-preview-thumb" alt="Preview">
+                <div style="flex: 1;">
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary-dark); display: block;">✓ Real photo selected</span>
+                  <button type="button" class="btn-remove-image" id="btnRemoveImage">✕ Remove Image (Use Icon/Emoji instead)</button>
+                </div>
+              </div>
+            </div>
+
             <!-- Emoji Picker -->
             <div class="admin-form-group">
               <label>Choose Icon / Emoji</label>

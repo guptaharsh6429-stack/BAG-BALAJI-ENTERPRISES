@@ -28,6 +28,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Clitoria ternatea",
     emoji: "🦋",
     gradient: "linear-gradient(135deg, #3f51b5, #1a237e)",
+    image: "",
     badge: "Top Seller",
     price: 850,
     unit: "kg",
@@ -42,6 +43,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Matricaria chamomilla",
     emoji: "🌼",
     gradient: "linear-gradient(135deg, #fbc02d, #f57f17)",
+    image: "",
     badge: "Popular",
     price: 1250,
     unit: "kg",
@@ -56,6 +58,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Centaurea cyanus",
     emoji: "💐",
     gradient: "linear-gradient(135deg, #0288d1, #01579b)",
+    image: "",
     badge: "Premium",
     price: 1450,
     unit: "kg",
@@ -70,6 +73,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Hibiscus sabdariffa",
     emoji: "🌺",
     gradient: "linear-gradient(135deg, #d81b60, #880e4f)",
+    image: "",
     badge: "High Demand",
     price: 650,
     unit: "kg",
@@ -84,6 +88,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Silybum marianum",
     emoji: "🌾",
     gradient: "linear-gradient(135deg, #558b2f, #33691e)",
+    image: "",
     badge: "Nutraceutical",
     price: 380,
     unit: "kg",
@@ -98,6 +103,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Lavandula angustifolia",
     emoji: "💜",
     gradient: "linear-gradient(135deg, #7e57c2, #4527a0)",
+    image: "",
     badge: "Aromatherapy",
     price: 1850,
     unit: "kg",
@@ -112,6 +118,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Rosa damascena",
     emoji: "🌹",
     gradient: "linear-gradient(135deg, #e91e63, #c2185b)",
+    image: "",
     badge: "Pure Fragrance",
     price: 950,
     unit: "kg",
@@ -126,6 +133,7 @@ const DEFAULT_PRODUCTS = [
     botanical: "Moringa oleifera",
     emoji: "🍃",
     gradient: "linear-gradient(135deg, #43a047, #1b5e20)",
+    image: "",
     badge: "Superfood",
     price: 280,
     unit: "kg",
@@ -149,7 +157,10 @@ const ProductStore = {
       if (custom) {
         const parsed = JSON.parse(custom);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          return parsed.map(p => ({
+            ...p,
+            image: p.image || ''
+          }));
         }
       }
 
@@ -159,13 +170,14 @@ const ProductStore = {
         const pMap = JSON.parse(legacyPrices);
         return DEFAULT_PRODUCTS.map(p => ({
           ...p,
+          image: p.image || '',
           price: typeof pMap[p.id] !== 'undefined' ? Number(pMap[p.id]) : p.price
         }));
       }
     } catch (e) {
       console.warn('Error reading products from localStorage:', e);
     }
-    return DEFAULT_PRODUCTS.map(p => ({ ...p }));
+    return DEFAULT_PRODUCTS.map(p => ({ ...p, image: p.image || '' }));
   },
 
   saveAllProducts(productsArray) {

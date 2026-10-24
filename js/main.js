@@ -536,10 +536,15 @@ function renderProductCatalog() {
   // Generate cards
   grid.innerHTML = products.map((prod, index) => {
     const formattedPrice = Number(prod.price).toLocaleString('en-IN');
+    const hasRealImage = prod.image && prod.image.trim() !== '';
+    const imageHtml = hasRealImage
+      ? `<img src="${prod.image}" alt="${prod.name}" class="product-real-img" loading="lazy">`
+      : `<div class="placeholder-img" style="background: ${prod.gradient};">${prod.emoji}</div>`;
+
     return `
       <article class="product-card fade-in" data-id="${prod.id}">
         <div class="product-image">
-          <div class="placeholder-img" style="background: ${prod.gradient};">${prod.emoji}</div>
+          ${imageHtml}
           <span class="product-badge">${prod.badge}</span>
         </div>
         <div class="product-body">
@@ -651,8 +656,13 @@ function initProductModal() {
     }
 
     if (modalBody) {
+      const hasRealImage = prod.image && prod.image.trim() !== '';
+      const imageMarkup = hasRealImage
+        ? `<div class="modal-image"><img src="${prod.image}" alt="${prod.name}" class="modal-real-img"></div>`
+        : `<div class="modal-image" style="background: ${prod.gradient}; font-size: 5rem;">${prod.emoji}</div>`;
+
       modalBody.innerHTML = `
-        <div class="modal-image" style="background: ${prod.gradient}; font-size: 5rem;">${prod.emoji}</div>
+        ${imageMarkup}
         <h4>${prod.name}</h4>
         <p style="font-style: italic; color: var(--color-primary); font-size: 0.95rem; margin-top: -4px; margin-bottom: 12px;">Botanical Name: ${prod.botanical}</p>
 
@@ -848,10 +858,16 @@ function initPriceManager() {
       return;
     }
 
-    productList.innerHTML = products.map(prod => `
+    productList.innerHTML = products.map(prod => {
+      const hasRealImg = prod.image && prod.image.trim() !== '';
+      const thumbMarkup = hasRealImg
+        ? `<img src="${prod.image}" class="admin-prod-thumb" alt="${prod.name}">`
+        : `<div class="admin-prod-emoji" style="background: ${prod.gradient};">${prod.emoji}</div>`;
+
+      return `
       <div class="admin-product-row" data-id="${prod.id}">
         <div class="admin-prod-info">
-          <div class="admin-prod-emoji" style="background: ${prod.gradient};">${prod.emoji}</div>
+          ${thumbMarkup}
           <div class="admin-prod-names">
             <strong>${prod.name}</strong>
             <span>${prod.botanical || 'Natural Botanical'} • MOQ: ${prod.moq || 'N/A'}</span>
@@ -868,7 +884,124 @@ function initPriceManager() {
           <button type="button" class="btn-row-action btn-row-delete" data-id="${prod.id}" title="Delete product">🗑️</button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
+  }
+
+  // Image Handling (File Upload, Auto-Compression, & URL)
+  const imageUploadBox = document.getElementById('imageUploadBox');
+  const imageFileInput = document.getElementById('prodImageFileInput');
+  const imageUrlInput = document.getElementById('prodImageUrlInput');
+  const imageBase64Input = document.getElementById('prodImageBase64');
+  const imagePreviewWrapper = document.getElementById('imagePreviewWrapper');
+  const imagePreviewThumb = document.getElementById('imagePreviewThumb');
+  const removeImageBtn = document.getElementById('btnRemoveImage');
+
+  function updateImagePreview(src) {
+    if (src && src.trim() !== '') {
+      if (imagePreviewThumb) imagePreviewThumb.src = src;
+      if (imagePreviewWrapper) imagePreviewWrapper.style.display = 'flex';
+    } else {
+      if (imagePreviewThumb) imagePreviewThumb.src = '';
+      if (imagePreviewWrapper) imagePreviewWrapper.style.display = 'none';
+      if (imageBase64Input) imageBase64Input.value = '';
+      if (imageUrlInput) imageUrlInput.value = '';
+      if (imageFileInput) imageFileInput.value = '';
+    }
+  }
+
+  function compressAndSetImage(file) {
+    if (!file || !file.type.startsWith('image/')) {
+      alert('Please select a valid image file (JPG, PNG, or WebP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxDim = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Quality 0.82 JPEG minimizes storage size to ~40KB-70KB
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        if (imageBase64Input) imageBase64Input.value = dataUrl;
+        if (imageUrlInput) imageUrlInput.value = '';
+        updateImagePreview(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (imageUploadBox && imageFileInput) {
+    imageUploadBox.addEventListener('click', (e) => {
+      if (e.target !== imageFileInput) {
+        imageFileInput.click();
+      }
+    });
+
+    imageFileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        compressAndSetImage(e.target.files[0]);
+      }
+    });
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      imageUploadBox.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        imageUploadBox.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+      imageUploadBox.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        imageUploadBox.classList.remove('dragover');
+      });
+    });
+
+    imageUploadBox.addEventListener('drop', (e) => {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        compressAndSetImage(e.dataTransfer.files[0]);
+      }
+    });
+  }
+
+  if (imageUrlInput) {
+    imageUrlInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      if (val) {
+        if (imageBase64Input) imageBase64Input.value = '';
+        updateImagePreview(val);
+      } else if (!imageBase64Input || !imageBase64Input.value) {
+        updateImagePreview('');
+      }
+    });
+  }
+
+  if (removeImageBtn) {
+    removeImageBtn.addEventListener('click', () => {
+      updateImagePreview('');
+    });
   }
 
   // Handle Edit & Delete button clicks inside product list
@@ -900,6 +1033,20 @@ function initPriceManager() {
         setEmojiValue(prod.emoji || '🌿');
         setGradientValue(prod.gradient || 'linear-gradient(135deg, #43a047, #1b5e20)');
 
+        // Image preview & state
+        if (prod.image && prod.image.trim() !== '') {
+          if (prod.image.startsWith('data:image')) {
+            if (imageBase64Input) imageBase64Input.value = prod.image;
+            if (imageUrlInput) imageUrlInput.value = '';
+          } else {
+            if (imageUrlInput) imageUrlInput.value = prod.image;
+            if (imageBase64Input) imageBase64Input.value = '';
+          }
+          updateImagePreview(prod.image);
+        } else {
+          updateImagePreview('');
+        }
+
         showFormView(`✏️ Edit: ${prod.name}`);
       }
 
@@ -927,6 +1074,7 @@ function initPriceManager() {
       document.getElementById('editProductId').value = '';
       setEmojiValue('🌿');
       setGradientValue('linear-gradient(135deg, #43a047, #1b5e20)');
+      updateImagePreview('');
       showFormView('➕ Add New Botanical Product');
     });
   }
@@ -996,6 +1144,9 @@ function initPriceManager() {
       const emoji = document.getElementById('prodEmoji').value || '🌿';
       const gradient = document.getElementById('prodGradient').value || 'linear-gradient(135deg, #43a047, #1b5e20)';
       const description = document.getElementById('prodDesc').value.trim();
+      const image = (imageBase64Input && imageBase64Input.value.trim()) ||
+                    (imageUrlInput && imageUrlInput.value.trim()) ||
+                    '';
 
       if (!name || isNaN(price) || price <= 0 || !description) {
         alert('Please fill in the product name, price, and description.');
@@ -1008,6 +1159,7 @@ function initPriceManager() {
         botanical,
         emoji,
         gradient,
+        image,
         badge,
         price,
         unit,

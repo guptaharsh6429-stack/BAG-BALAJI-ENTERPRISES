@@ -23,13 +23,18 @@ You have full control over your product catalog right from your browser.
 1. **➕ Add a New Product:**
    - Click **"➕ Add New Product"** at the top.
    - Enter Product Name, Botanical Name, Price (₹), Unit (per kg/quintal/gm), MOQ, Packaging, and Shelf Life.
+   - **📸 Real Product Photo Upload (Optional):**
+     - Click the upload box to upload a real photo from your computer or phone (JPG, PNG, WebP).
+     - Images are automatically resized and compressed for ultra-fast loading without slowing down your site!
+     - Or paste an image URL or image path if you have one online.
+     - If you don't upload a photo, it will automatically use your chosen icon/emoji with a beautiful gradient card.
    - Pick an emoji icon (e.g. 🌿, 🌾, 🌸, 🌺, 🍃, 🍂, 🌰, 🍵, 🌱) and a card color theme.
    - Enter a short description and click **"💾 Save Product"**.
    - It appears on your live website immediately!
 
 2. **✏️ Edit Any Product:**
    - Click **"✏️ Edit"** next to any product in the list.
-   - Update any field (name, price, packaging, description, etc.).
+   - Change photos, upload new ones, remove photos, or edit prices, packaging, and descriptions.
    - Click **"💾 Save Product"**.
 
 3. **🗑️ Delete Any Product:**
